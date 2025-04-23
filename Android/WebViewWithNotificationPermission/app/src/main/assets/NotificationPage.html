@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>ExploreWKWebViewJavascript</title>
+    <script type="text/javascript">
+<!--        function requestPermission() {-->
+<!--            window.Android.requestNotificationPermission();-->
+<!--        }-->
+
+        function requestPermission() {
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.observer) {
+                // iOS (WKWebView)
+                window.webkit.messageHandlers.observer.postMessage("");
+            } else if (window.Android && window.Android.requestNotificationPermission) {
+                // Android (WebView with JavascriptInterface)
+                window.Android.requestNotificationPermission();
+            } else {
+                // Neither available (e.g., in a browser)
+                console.warn("Neither iOS nor Android bridge found.");
+                alert("This functionality is only available in the native app.");
+            }
+        }
+    </script>
+</head>
+<body>
+<div>
+    <h2>Permissions:</h2>
+    <button onclick="requestPermission()">Request Notification Permission</button>
+</div>
+</body>
+</html>
