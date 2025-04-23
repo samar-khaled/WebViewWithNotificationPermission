@@ -6,7 +6,17 @@
       <title>ExploreWKWebViewJavascript</title>
       <script type="text/javascript">
           function requestPermission() {
-              window.webkit.messageHandlers.observer.postMessage("");
+              if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.observer) {
+                  // iOS (WKWebView)
+                  window.webkit.messageHandlers.observer.postMessage("");
+              } else if (window.Android && window.Android.requestNotificationPermission) {
+                  // Android (WebView with JavascriptInterface)
+                  window.Android.requestNotificationPermission();
+              } else {
+                  // Neither available (e.g., in a browser)
+                  console.warn("Neither iOS nor Android bridge found.");
+                  alert("This functionality is only available in the native app.");
+              }
           }
       </script>
   </head>
